@@ -16,6 +16,54 @@ linked_list::linked_list()
 	
 }
 
+/*Destructor*/
+linked_list::~linked_list()
+{
+	this->Destroy();
+}
+
+//copy constructor
+linked_list::linked_list(const linked_list & l)
+{
+		
+		this->Init(l.getMemSize(),l.getBlockSize());
+		char * iter = this->head_pointer;
+		char * iter_cp = l.getHeadPointer();
+		while (iter - this->head_pointer < this->mem_size){
+			*iter = *iter_cp;
+			iter++;
+			iter_cp++;
+		}
+		
+		front_pointer = (node*)(((char*)l.getFrontPointer() - l.getHeadPointer()) + this->head_pointer);
+		free_pointer = (node*)(((char*)l.getFreePointer() - l.getHeadPointer()) + this->head_pointer);
+		free_data_pointer = (node*)(((char*)l.getFreeDataPointer() - l.getHeadPointer()) + this->head_pointer);	
+}
+
+//copy assignment operator
+linked_list & linked_list::operator=(const linked_list & l)
+{
+
+		if (this == &l) return *this;
+
+		this->Destroy();
+
+		this->Init(l.getMemSize(),l.getBlockSize());
+		char * iter = this->head_pointer;
+		char * iter_cp = l.getHeadPointer();
+		while (iter - this->head_pointer < this->mem_size){
+			*iter = *iter_cp;
+			iter++;
+			iter_cp++;
+		}
+		
+		front_pointer = (node*)(((char*)l.getFrontPointer() - l.getHeadPointer()) + this->head_pointer);
+		free_pointer = (node*)(((char*)l.getFreePointer() - l.getHeadPointer()) + this->head_pointer);
+		free_data_pointer = (node*)(((char*)l.getFreeDataPointer() - l.getHeadPointer()) + this->head_pointer);	
+
+		return *this;
+}
+
 void linked_list::Init(int M, int b)
 {
 	
@@ -116,8 +164,6 @@ void linked_list::Insert (int k, char * data_ptr, int data_len)
 	}
 	
 }
-
-bool remove
 
 int linked_list::Delete(int delete_key)
 {
@@ -222,6 +268,23 @@ bool linked_list::Resize()
 
 }
 
+bool linked_list::RemoveLast()
+{
+	if (!initialized) {
+		return false;
+	}
+	else if (!free_pointer) {
+		return false;
+	}
+	else {
+		if (this->Delete(free_pointer->key) != -1) { 
+			return true;
+		} else {
+			return false;
+		}
+	}
+}
+
 /* Iterate through the list, if a given key exists, return the pointer to it's node */
 /* otherwise, return NULL                                                           */
 struct node* linked_list::Lookup(int lookup_key)
@@ -260,42 +323,42 @@ void linked_list::PrintList()
 }
 
 /* Getter Functions */
-char* linked_list::getHeadPointer()
+char* linked_list::getHeadPointer() const
 {
 	return this->head_pointer;
 }
 
-node* linked_list::getFrontPointer()
+node* linked_list::getFrontPointer() const
 {
 	return this->front_pointer;
 }
 
-node* linked_list::getFreePointer()
+node* linked_list::getFreePointer() const
 {
 	return this->free_pointer;
 }
 
-node* linked_list::getFreeDataPointer()
+node* linked_list::getFreeDataPointer() const
 {
 	return this->free_data_pointer;
 }
 
-int linked_list::getBlockSize()
+int linked_list::getBlockSize() const
 {
 	return this->block_size;
 }
 
-int linked_list::getMemSize()
+int linked_list::getMemSize() const
 {
 	return this->mem_size;
 }
 
-int linked_list::getMaxDataSize()
+int linked_list::getMaxDataSize() const
 {
 	return this->max_data_size;
 }
 
-bool linked_list::getInitialized()
+bool linked_list::getInitialized()  const
 {
 	return this->initialized;
 }
@@ -336,7 +399,7 @@ void linked_list::setMaxDataSize(int new_max_data_size)
 	this->max_data_size = new_max_data_size;
 }
 
-void linked_list::setInitialized(bool new_initialized)
+void linked_list::setInitialized(bool new_initialized) 
 {
 	this->initialized = new_initialized;
 }

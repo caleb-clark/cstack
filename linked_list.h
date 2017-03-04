@@ -40,21 +40,26 @@ private:
 
     /*  Double the size of the linked list and copy the contents to new space */
     bool Resize();
+    
+
+    /* Destroys the linked list and frees all used resources */
+    void Destroy(); 
 
 public:
+    void Init(int M, int b);
 	/* Constructor */
 	linked_list();
-
-	/* Initialize the linked list and allocate memory */
-	/* Should only be called once from main           */
-    void Init(int M, int b);
-    
-    /* Destroys the linked list and frees all used resources */
-    void Destroy(); 		 
+    /*Destructor*/
+    ~linked_list();
+    /*Copy Constructor*/
+    linked_list(const linked_list& l);
+    linked_list & operator=(const linked_list& l);
+		 
     
     /* Inserts thea key and copies the value to the payload */
     void Insert(int key,char * value_ptr, int value_len);
     
+    bool RemoveLast();
     /* Delete the whole block containing a particular key                 */
     /* When multiple entries have the same key, delete only the first one */
     int Delete(int key);
@@ -67,15 +72,15 @@ public:
     void PrintList ();
     
     /* Getter Functions */
-    char *getHeadPointer();
-    node *getFrontPointer();
-    node *getFreePointer();
-    node *getFreeDataPointer();
+    char *getHeadPointer() const;
+    node *getFrontPointer() const;
+    node *getFreePointer() const;
+    node *getFreeDataPointer() const;
     
-    int getBlockSize();
-    int getMemSize();
-    int getMaxDataSize();
-    bool getInitialized();
+    int getBlockSize() const;
+    int getMemSize() const;
+    int getMaxDataSize() const;
+    bool getInitialized() const;
     
     /* Setter Functions */
     void setHeadPointer(char* new_pointer);
