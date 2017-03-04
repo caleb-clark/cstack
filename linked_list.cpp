@@ -4,7 +4,7 @@
 /* Constructor */
 linked_list::linked_list()
 {
-	//not completely sure where these should point to before init
+	
 	head_pointer = NULL;
 	front_pointer = NULL;
 	free_pointer = NULL;
@@ -18,7 +18,7 @@ linked_list::linked_list()
 
 void linked_list::Init(int M, int b)
 {
-	//how to handle the case where M is not evenly divisible by b
+	
 	if(!initialized){ 
 		if(M % b != 0) {
 				M = M - (M % b);
