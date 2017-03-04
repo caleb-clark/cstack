@@ -117,8 +117,6 @@ void linked_list::Insert (int k, char * data_ptr, int data_len)
 	
 }
 
-bool remove
-
 int linked_list::Delete(int delete_key)
 {
 	if (initialized) {
