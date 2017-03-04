@@ -1,13 +1,4 @@
-/* --------------------------------------------------------------------------- */
-/* Developer: Andrew Kirfman, Margaret Baxter                                  */
-/* Project: CSCE-313 Machine Problem #1                                        */
-/*                                                                             */
-/* File: ./MP1/linked_list.h                                                   */
-/* --------------------------------------------------------------------------- */
 
-
-// Note: If you've never seen this construct before, it's called an include
-// guard.  It prevents your header file from being defined more than once
 #ifndef _linked_list_h_
 #define _linked_list_h_
 
@@ -19,31 +10,6 @@
 #include <string>
 #include <climits>
 #include <cstring>
-
-
-
-/* IMPORTANT NOTE!!!
- * 
- * 
- * 
- * 
- * 
- * 
- * This sample code provided to you includes templates of functions which 
- * count as extra credit in this assignment (namely, keeping track of free
- * nodes).  If you decide not to implement the extra credit portion of the 
- * assignment, be sure to delete those functions from your final submitted
- * code.  
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- */ 
-
-
 
 
 struct node
@@ -68,8 +34,8 @@ private:
     node *free_data_pointer;
     
     int block_size;
-    int mem_size; //is this M or current amount of space in linked list?!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    int max_data_size; //M or max size that can be put into the a block after header accounted for?!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    int mem_size; 
+    int max_data_size; 
     bool initialized;
 
     /*  Double the size of the linked list and copy the contents to new space */
