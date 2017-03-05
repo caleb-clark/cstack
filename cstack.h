@@ -14,7 +14,7 @@ class cstack
 private:
 
         linked_list * l;
-        int size;
+        int size_;
 public:
     //constructor
     cstack();
@@ -30,7 +30,8 @@ public:
     T pop();
     //returns value of top element
     T top();
-        
+    //returns size of stack
+    int size();
 
 
 };
@@ -38,9 +39,9 @@ public:
     template <typename T>
     cstack<T>::cstack()
     {
-        size = 0;
+        size_ = 0;
         l = new linked_list();
-        l->Init(sizeof(T),sizeof(T)+sizeof(node));
+        l->Init(8*(sizeof(T)+sizeof(node)),sizeof(T)+sizeof(node));
     }
 
     //destructor
@@ -70,9 +71,9 @@ public:
     bool cstack<T>::push(const T & elem)
     {
         T tmp = elem;
-        T * ptr = tmp;
-        l->Insert(0, (char*)ptr, sizeof(elem));
-        size++;
+        T * ptr = &tmp;
+        l->Insert(size_, (char*)ptr, sizeof(elem));
+        size_++;
         return true;
     }
 
@@ -80,11 +81,18 @@ public:
     template <typename T>
     T cstack<T>::pop()
     {
+        if (size_ < 1) {
+            std::cout << "No elements to pop" << std::endl;
+            return T();
+        }
+        node * n = l->getFreePointer();
+        n++;
+        T * tmp = (T*)n;
         if (l->RemoveLast()){
-            size--;
-            return true;
+            size_--;
+            return *tmp;
         } else {
-            return false;
+            return T();
         }
     }
 
@@ -92,8 +100,19 @@ public:
     template <typename T>
     T cstack<T>::top()
     {
+        if (size_ < 1) {
+            std::cout << "No elements" << std::endl;
+            return T();
+        }
         node * n = l->getFreePointer();
+       // std::cout << sizeof(node) << std::endl;
         n += sizeof(node);
         T * tmp = (T*)n;
         return *tmp;
+    }
+
+    template <typename T>
+    int cstack<T>::size()
+    {
+        return size;
     }

@@ -80,7 +80,7 @@ void linked_list::Init(int M, int b)
 			return;
 		}
 		max_data_size = b - sizeof(*((node*)head_pointer));
-		std::cout << "node size: " << sizeof(*((char*)(head_pointer))) << std::endl;
+		//std::cout << "node size: " << sizeof(*((char*)(head_pointer))) << std::endl;
 		free_data_pointer = (node*) head_pointer;
 		initialized = true;
 	}
@@ -127,11 +127,13 @@ void linked_list::Insert (int k, char * data_ptr, int data_len)
 		while ( ( (char*) (free_data_pointer) - (head_pointer) ) >= mem_size) //full list
 		{
 			if (!this->Resize()) {
+				std::cout << "Failed to resize" << std::endl;
 				return;
 			}
+			std::cout << "Last b4 resize: " << *(int*)(free_pointer + 1) << std::endl;
 		}
 	 
-	
+		
 		node * newNode = ((node*) free_data_pointer);
 		newNode->next = NULL;
 		newNode->value_len = data_len;
@@ -151,7 +153,7 @@ void linked_list::Insert (int k, char * data_ptr, int data_len)
 		char * temp_val = (char*) ( (char*) (newNode) + sizeof(*newNode) ); //char[] ptr to beginning of data block 
 		
 		memcpy( temp_val, data_ptr, data_len ); //copy value from data_ptr to data block
-		
+
 		free_data_pointer = (node*) ( (char*) (free_data_pointer) + block_size); 
 		
 		while( ( (node*) (free_data_pointer) )->next) // next free_data_pointer will be the next block whose next ptr is NULL
@@ -233,6 +235,7 @@ int linked_list::Delete(int delete_key)
 		return -1;
 	}
 }
+
 /* 
  * function will not check if resize is necessary
  * it will just resize when called. 
@@ -242,30 +245,21 @@ bool linked_list::Resize()
 	if (!initialized) {
 		std::cout << "linked_list not initialized" << std::endl;
 		return false;
-	}
-	else{
-
+	} else {
 		char * temp_head = (char*) malloc(2*mem_size);
-		char * iter = temp_head;
-		char * iter_cp = head_pointer;
-		while (iter - temp_head < mem_size){
-			*iter = *iter_cp;
-			iter++;
-			iter_cp++;
-		}
+		memcpy(temp_head, head_pointer, mem_size);
+
 		mem_size *= 2;
-		
+
 		front_pointer = (node*)(((char*)front_pointer - head_pointer) + temp_head);
-		free_pointer = (node*)(((char*)free_data_pointer - head_pointer) + temp_head);
+		free_pointer = (node*)(((char*)free_pointer - head_pointer) + temp_head);
 		free_data_pointer = (node*)(((char*)free_data_pointer - head_pointer) + temp_head);
-		free(head_pointer);		
+		free(head_pointer);	
+		std::cout << "Last b4 resize: " << *(int*)(free_pointer + 1) << std::endl;	
 		head_pointer = temp_head;
+
 		return true;
-
-
 	}
-
-
 }
 
 bool linked_list::RemoveLast()
