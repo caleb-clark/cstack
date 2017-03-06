@@ -130,7 +130,7 @@ void linked_list::Insert (int k, char * data_ptr, int data_len)
 				std::cout << "Failed to resize" << std::endl;
 				return;
 			}
-			std::cout << "Last b4 resize: " << *(int*)(free_pointer + 1) << std::endl;
+			//std::cout << "Last b4 resize: " << *(int*)(free_pointer + 1) << std::endl;
 		}
 	 
 		
@@ -248,16 +248,28 @@ bool linked_list::Resize()
 	} else {
 		char * temp_head = (char*) malloc(2*mem_size);
 		memcpy(temp_head, head_pointer, mem_size);
-
+		
+		long long int offset = temp_head - head_pointer;
+		node * curr = ( node* ) temp_head;
+		for ( int i = 0; i < mem_size; i+=block_size){
+			
+			if (curr->next) {
+				curr->next = (node*)((char*)curr->next + offset);
+			}
+			curr = (node*)((char*)curr + block_size);
+		}
+		
 		mem_size *= 2;
 
+		
+		
 		front_pointer = (node*)(((char*)front_pointer - head_pointer) + temp_head);
 		free_pointer = (node*)(((char*)free_pointer - head_pointer) + temp_head);
 		free_data_pointer = (node*)(((char*)free_data_pointer - head_pointer) + temp_head);
 		free(head_pointer);	
-		std::cout << "Last b4 resize: " << *(int*)(free_pointer + 1) << std::endl;	
+		//std::cout << "Last b4 resize: " << *(int*)(free_pointer + 1) << std::endl;	
 		head_pointer = temp_head;
-
+		
 		return true;
 	}
 }

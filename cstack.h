@@ -114,5 +114,5 @@ public:
     template <typename T>
     int cstack<T>::size()
     {
-        return size;
+        return size_;
     }
